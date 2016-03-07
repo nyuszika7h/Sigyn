@@ -822,16 +822,16 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             ident = pending[1].split('@')[0]
             mask = self.prefixToMask(irc,'%s!%s@%s' % (nick,ident,msg.args[2]))
             if not self.registryValue('enable'):
-                self.logChannel(irc,"INFO: disabled, can't kline %s (%s)" % (mask,pending[3]))
+                self.logChannel(irc,"INFO: disabled, can't gline %s (%s)" % (mask,pending[3]))
                 if pending[1] in i.klines:
                     del i.klines[pending[1]]
                 return
             if not i.opered:
-                self.logChannel(irc,"INFO: not opered, can't kline %s (%s)" % (mask,pending[3]))
+                self.logChannel(irc,"INFO: not opered, can't gline %s (%s)" % (mask,pending[3]))
                 if pending[1] in i.klines:
                     del i.klines[pending[1]]
                 return
-            irc.sendMsg(ircmsgs.IrcMsg('KLINE %s %s :%s|%s' % (pending[2],mask,pending[4],pending[3])))
+            irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (pending[2],mask,pending[4],pending[3])))
             if pending[1] in i.klines:
                 del i.klines[pending[1]]
 
@@ -840,7 +840,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
         if mask in i.klines:
             return
         if duration < 0:
-            self.log.debug('Ignored kline %s due to no duration', mask)
+            self.log.debug('Ignored gline %s due to no duration', mask)
             return
         if not klineMessage:
             klineMessage = self.registryValue('klineMessage')
@@ -862,9 +862,9 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
                         irc.sendMsg(ircmsgs.IrcMsg('WHOWAS %s' % nick))
         if canKline:
             if not self.registryValue('enable'):
-                self.logChannel(irc,"INFO: disabled, can't kline %s (%s)" % (mask,reason))
+                self.logChannel(irc,"INFO: disabled, can't gline %s (%s)" % (mask,reason))
             else:
-                irc.sendMsg(ircmsgs.IrcMsg('KLINE %s %s :%s|%s' % (duration,mask,klineMessage,reason)))
+                irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (duration,mask,klineMessage,reason)))
         def forgetKline ():
             i = self.getIrc(irc)
             if mask in i.klines:
