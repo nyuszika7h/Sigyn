@@ -831,7 +831,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
                 if pending[1] in i.klines:
                     del i.klines[pending[1]]
                 return
-            irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (pending[2],mask,pending[4],pending[3])))
+            irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (mask,pending[4],pending[2],pending[3])))
             if pending[1] in i.klines:
                 del i.klines[pending[1]]
 
@@ -864,7 +864,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             if not self.registryValue('enable'):
                 self.logChannel(irc,"INFO: disabled, can't gline %s (%s)" % (mask,reason))
             else:
-                irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (duration,mask,klineMessage,reason)))
+                irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (mask,duration,klineMessage,reason)))
         def forgetKline ():
             i = self.getIrc(irc)
             if mask in i.klines:
