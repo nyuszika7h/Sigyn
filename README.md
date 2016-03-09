@@ -3,7 +3,7 @@
 A Limnoria's plugin to handle various spam and abuses with network hammer
 You must install python-dnspython.
 
-You must tweak default settings to fits your needs.
+This version is being modified to work with Atheme IRC Services and InspIRCd.
 
 ## Commands ##
 

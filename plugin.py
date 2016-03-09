@@ -810,7 +810,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             return
         if not reason:
             reason = self.registryValue('killMessage')
-        irc.sendMsg(ircmsgs.IrcMsg('KILL %s :%s' % (nick,reason)))
+        irc.queueMsg(ircmsgs.privmsg('OperServ', 'AKILL ADD %s !T 8h %s' % (nick,reason)))
 
     def do338 (self,irc,msg):
         i = self.getIrc(irc)
@@ -831,7 +831,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
                 if pending[1] in i.klines:
                     del i.klines[pending[1]]
                 return
-            irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (mask,pending[4],pending[2],pending[3])))
+            irc.queueMsg(ircmsgs.privmsg('OperServ', 'AKILL ADD %s !T 8h %s|%s' % (nick,pending[3],pending[4])))
             if pending[1] in i.klines:
                 del i.klines[pending[1]]
 
@@ -864,7 +864,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             if not self.registryValue('enable'):
                 self.logChannel(irc,"INFO: disabled, can't gline %s (%s)" % (mask,reason))
             else:
-                irc.sendMsg(ircmsgs.IrcMsg('GLINE %s %s :%s|%s' % (mask,duration,klineMessage,reason)))
+                irc.queueMsg(ircmsgs.privmsg('OperServ', 'AKILL ADD %s !T 8h %s|%s' % (nick,klineMessage,reason)))
         def forgetKline ():
             i = self.getIrc(irc)
             if mask in i.klines:
