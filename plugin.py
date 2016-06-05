@@ -474,7 +474,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
     def lspattern (self,irc,msg,args,optlist,pattern):
         """[--deep] <id|pattern>
 
-        returns list patterns which matchs pattern or info about pattern #id, use --deep to search on desactivated patterns"""
+        returns list patterns which matchs pattern or info about pattern #id, use --deep to search on deactivated patterns"""
         i = self.getIrc(irc)
         deep = False
         for (option, arg) in optlist:
@@ -737,7 +737,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
         i = self.getIrc(irc)
         if not i.opered:
             i.opered = True
-            irc.queueMsg(ircmsgs.IrcMsg('MODE %s +s +bf' % irc.nick))
+            irc.queueMsg(ircmsgs.IrcMsg('MODE %s +s +f' % irc.nick))
             try:
                 conf.supybot.protocols.irc.throttleTime.setValue(0.2)
             except:
@@ -812,7 +812,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             reason = self.registryValue('killMessage')
         irc.queueMsg(ircmsgs.privmsg('OperServ', 'AKILL ADD %s !T 8h %s' % (nick,reason)))
 
-    def do338 (self,irc,msg):
+    def do314 (self,irc,msg):
         i = self.getIrc(irc)
         if msg.args[0] == irc.nick and msg.args[1] in i.whowas:
             pending = i.whowas[msg.args[1]]
@@ -1002,7 +1002,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
         try:
             (targets,text) = msg.args
             i = self.getIrc(irc)
-            reg = r".*\s+([a-z]+)\.freenode\.net.*:\s+(\d{2,6})\s+"
+            reg = r".*\s+([a-z]+)\.IRC4Fun\.net.*:\s+(\d{2,6})\s+"
             result = re.match(reg,text)
             if result:
                 i.servers[result.group(1)] = int(result.group(2))
@@ -1020,7 +1020,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
         server = None
         if found:
             i.servers = {}
-            server = '%s.freenode.net' % found
+            server = '%s.IRC4Fun.net' % found
             i.servers[server] = time.time()
             def bye():
                 i = self.getIrc(irc)
@@ -1144,7 +1144,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
         if i.netsplit:
             if time.time() > i.netsplit:
                 i.netsplit = False
-                self.logChannel(irc,"INFO: netsplit mode desactivated")
+                self.logChannel(irc,"INFO: netsplit mode deactivated")
         if self.registryValue('saslChannel'):
             if i.netsplit:
                 if self.registryValue('saslChannel') in irc.state.channels:
@@ -1544,7 +1544,7 @@ class Sigyn(callbacks.Plugin,plugins.ChannelDBHandler):
             channels = list(queue)
             queue.reset()
             if not key in i.queues[user]:
-                self.logChannel(irc,'NOTE: %s is crawling freenode (%s)' % (user,', '.join(channels)))
+                self.logChannel(irc,'NOTE: %s is crawling IRC4Fun (%s)' % (user,', '.join(channels)))
                 def rc():
                     i = self.getIrc(irc)
                     if user in i.queues:
